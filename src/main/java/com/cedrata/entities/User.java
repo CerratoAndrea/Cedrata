@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "utente") 
+@Table(name = "users") 
 public class User {
 
     @Id  // Questo campo è la chiave primaria

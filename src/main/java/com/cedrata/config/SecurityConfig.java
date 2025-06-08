@@ -14,12 +14,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-          .authorizeHttpRequests(auth -> auth
-              .requestMatchers("/", "/register", "/login", "/css/**", "/js/**").permitAll()
-              .anyRequest().authenticated()
-          )
+		http
+		  .authorizeHttpRequests(auth -> auth
+				  .requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/countries").permitAll()
+		      .anyRequest().authenticated()
+		  )
           .formLogin(form -> form
               .loginPage("/login")
               .defaultSuccessUrl("/", true)

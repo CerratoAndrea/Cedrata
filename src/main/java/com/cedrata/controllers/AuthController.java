@@ -28,26 +28,21 @@ public class AuthController {
 	
 	@PostMapping("/register")
 	public String processRegister(@Valid @ModelAttribute("utente") User user,
-                              BindingResult result,
-                              Model model) {
+	                              BindingResult result,
+	                              Model model) {
 
+	    if (utenteService.existsByUsername(user.getUsername())) {
+	        result.rejectValue("username", "error.utente", "Username già esistente");
+	    }
 
-    if (utenteService.existsByUsername(user.getUsername())) {
-        result.rejectValue("username", "error.utente", "Username già esistente");
-    }
+	    if (result.hasErrors()) {
+	        return "register";
+	    }
 
-    if (result.hasErrors()) {
-        return "register";
-    }
+	    user.setRole("USER");
 
-    utenteService.addUtente(user);
-    return "redirect:/login";
-
-	}
-	 
-	 @GetMapping("/login")
-	    public String showLoginForm() {
-	        return "login";
+	    utenteService.addUtente(user);
+	    return "redirect:/";
 	}
 	
 }
