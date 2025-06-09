@@ -29,6 +29,8 @@ public class MyUserDetailService implements UserDetailsService {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + utente.getRole())); // es. ROLE_USER
+        
+        System.out.println("utente trovato: " + utente.getUsername() + ", ruolo: " + utente.getRole()); // di debug
 
         return new org.springframework.security.core.userdetails.User(
             utente.getUsername(),

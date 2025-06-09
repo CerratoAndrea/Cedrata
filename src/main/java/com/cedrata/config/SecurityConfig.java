@@ -14,35 +14,48 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http
-		  .authorizeHttpRequests(auth -> auth
-				  .requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/countries").permitAll()
-		      .anyRequest().authenticated()
-		  )
-          .formLogin(form -> form
-              .loginPage("/login")
-              .defaultSuccessUrl("/", true)
-              .permitAll()
-          )
-          .logout(logout -> logout
-        		    .logoutUrl("/logout") // definisce l’URL per il logout
-        		    .logoutSuccessUrl("/") // reindirizza alla login con messaggio
-        		    .permitAll()
-        		);
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable()) // puoi rimuovere se non usi API REST o AJAX
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                    "/", 
+                    "/login", 
+                    "/register", 
+                    "/css/**", 
+                    "/js/**", 
+                    "/images/**", 
+                    "/countries",
+                    "/error",
+                    "/flags/**"
+                ).permitAll()
+                .anyRequest().authenticated()
+            )
+            .formLogin(form -> form
+                .loginPage("/login")
+                .defaultSuccessUrl("/countries", true) // cambia se vuoi una pagina iniziale diversa
+                .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll()
+            );
 
         return http.build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {	//cifra le password nel DB
-        return new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(); // criptazione sicura per password
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-	
 }
+
