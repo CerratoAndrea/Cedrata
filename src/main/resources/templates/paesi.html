@@ -1,76 +1,115 @@
+<!DOCTYPE html>
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Mappa Paesi</title>
-  <style>
-    svg {
+  <title>Mappa Interattiva dei Paesi</title>
+ <style>
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: white;
+  }
+
+  main {
+    max-width: 100%;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  h1 {
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.5rem;
+  }
+
+  #svg-container {
     width: 100%;
-    height: 90vh;
+    height: auto;
     display: block;
-    margin: 0 auto;
-    }
+  }
 
-    .land {
-      transition: all 0.2s ease;
-    }
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
 
-    .land:hover {
-      fill: red !important;
-      stroke: black;
-      transform: scale(1.02);
-      transform-origin: center;
-    }
+  .land {
+    fill: #ccc !important;
+    stroke: #999;
+    stroke-width: 0.5;
+    transition: fill 0.2s ease;
+  }
 
-    .tooltip {
-      position: absolute;
-      background: #fff;
-      border: 1px solid #ccc;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      padding: 10px;
-      border-radius: 8px;
-      display: none;
-      z-index: 999;
-      min-width: 180px;
-    }
+  .land:hover {
+    fill: red !important;
+    stroke: black;
+  }
 
-    .tooltip img {
-      width: 60px;
-      display: block;
-      margin-bottom: 5px;
-    }
+  .tooltip {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 14px;
+    display: none;
+    z-index: 1000;
+    min-width: 160px;
+  }
 
-    .map-container {
-      position: relative;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-  </style>
+  .tooltip img {
+    width: 60px;
+    display: block;
+    margin-bottom: 6px;
+  }
+</style>
 </head>
 <body>
 
 <main class="map-container">
   <h1>Mappa Interattiva dei Paesi</h1>
-
   <div id="tooltip" class="tooltip"></div>
-
-  <!-- Inserisce la mappa SVG -->
-  <div th:replace="~{fragments/mappa-svg :: mappasvg}"></div>
+  <div id="svg-container"></div>
 </main>
 
 <script th:inline="javascript">
   const paesi = /*[[${paesi}]]*/ [];
 
-  window.addEventListener("load", () => { // cambia da DOMContentLoaded → load
-    console.log("💡 SVG e DOM pronti!");
+  window.addEventListener("load", () => {
+    fetch('/svg/world.svg')
+      .then(res => res.text())
+      .then(svgText => {
+        document.getElementById('svg-container').innerHTML = svgText;
+        setupInterattivita();
+      })
+      .catch(err => {
+        console.error("❌ Errore nel caricamento della mappa SVG:", err);
+      });
 
-    paesi.forEach(paese => {
-      const el = document.getElementById(paese.alpha2code);
-      if (el) {
-        el.classList.add("land");
-        el.style.cursor = "pointer";
+    function setupInterattivita() {
+      const tooltip = document.getElementById('tooltip');
 
-        el.addEventListener('mouseover', e => {
-          const tooltip = document.getElementById('tooltip');
+      paesi.forEach(paese => {
+        const el = document.getElementById(paese.alpha2code);
+        if (!el) {
+          console.warn("⚠️ Elemento non trovato per:", paese.alpha2code);
+          return;
+        }
+
+        rendiInterattivo(el, paese);
+      });
+    }
+
+    function rendiInterattivo(el, paese) {
+      const targets = el.tagName === "g" ? el.querySelectorAll("path") : [el];
+
+      targets.forEach(p => {
+        p.classList.add("land");
+        p.style.cursor = "pointer";
+
+        p.addEventListener('mouseover', e => {
           tooltip.innerHTML = `
             <img src="${paese.flag}" alt="Bandiera">
             <strong>${paese.name}</strong><br>
@@ -81,24 +120,21 @@
           tooltip.style.display = "block";
         });
 
-        el.addEventListener('mousemove', e => {
-          const tooltip = document.getElementById('tooltip');
+        p.addEventListener('mousemove', e => {
           tooltip.style.top = (e.pageY + 15) + "px";
           tooltip.style.left = (e.pageX + 15) + "px";
         });
 
-        el.addEventListener('mouseout', () => {
-          document.getElementById('tooltip').style.display = "none";
+        p.addEventListener('mouseout', () => {
+          tooltip.style.display = "none";
         });
 
-        el.addEventListener('click', () => {
-          location.href = '/dettaglio/' + paese.alpha2code;
+        p.addEventListener('click', () => {
+          window.location.href = '/dettaglio/' + paese.alpha2code;
         });
-      } else {
-        console.warn("⚠️ elemento non trovato per:", paese.alpha2code);
-      }
-    });
+      });
+    }
   });
 </script>
-
 </body>
+</html>
