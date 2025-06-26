@@ -1,0 +1,60 @@
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: white;
+}
+
+main {
+  max-width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
+h1 {
+  text-align: center;
+  padding: 1rem;
+  font-size: 1.5rem;
+}
+
+#svg-container {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.land {
+  fill: #ccc !important;
+  stroke: #999;
+  stroke-width: 0.5;
+  transition: fill 0.2s ease;
+}
+
+.land:hover {
+  fill: red !important;
+  stroke: black;
+}
+
+.tooltip {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 14px;
+  display: none;
+  z-index: 1000;
+  min-width: 160px;
+}
+
+.tooltip img {
+  width: 60px;
+  display: block;
+  margin-bottom: 6px;
+}
