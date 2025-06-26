@@ -1,44 +1,104 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
->
+  <meta charset="UTF-8">
+  <title>Mappa Paesi</title>
+  <style>
+    svg {
+    width: 100%;
+    height: 90vh;
+    display: block;
+    margin: 0 auto;
+    }
+
+    .land {
+      transition: all 0.2s ease;
+    }
+
+    .land:hover {
+      fill: red !important;
+      stroke: black;
+      transform: scale(1.02);
+      transform-origin: center;
+    }
+
+    .tooltip {
+      position: absolute;
+      background: #fff;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+      z-index: 999;
+      min-width: 180px;
+    }
+
+    .tooltip img {
+      width: 60px;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .map-container {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+  </style>
 </head>
 <body>
-	
 
-	<div class="container">
-	
-	<h1>Paesi</h1>
-	
-	<table>
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Capitale</th>
-                <th>Regione</th>
-                <th>Alpha Code</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="paese : ${paesi}"> 
-                <td th:text="${paese.name}"></td>
-                <td th:text="${paese.capital}"></td>
-                <td th:text="${paese.region}"></td>
-                <td>
-                    <img th:src="${paese.flag}" alt="Bandiera del paese">
-                </td>
-            </tr>
-        </tbody>
-    </table>
-	
-	</div>
+<main class="map-container">
+  <h1>Mappa Interattiva dei Paesi</h1>
 
+  <div id="tooltip" class="tooltip"></div>
 
+  <!-- Inserisce la mappa SVG -->
+  <div th:replace="~{fragments/mappa-svg :: mappasvg}"></div>
+</main>
+
+<script th:inline="javascript">
+  const paesi = /*[[${paesi}]]*/ [];
+
+  window.addEventListener("load", () => { // cambia da DOMContentLoaded → load
+    console.log("💡 SVG e DOM pronti!");
+
+    paesi.forEach(paese => {
+      const el = document.getElementById(paese.alpha2code);
+      if (el) {
+        el.classList.add("land");
+        el.style.cursor = "pointer";
+
+        el.addEventListener('mouseover', e => {
+          const tooltip = document.getElementById('tooltip');
+          tooltip.innerHTML = `
+            <img src="${paese.flag}" alt="Bandiera">
+            <strong>${paese.name}</strong><br>
+            Capitale: ${paese.capital}
+          `;
+          tooltip.style.top = (e.pageY + 15) + "px";
+          tooltip.style.left = (e.pageX + 15) + "px";
+          tooltip.style.display = "block";
+        });
+
+        el.addEventListener('mousemove', e => {
+          const tooltip = document.getElementById('tooltip');
+          tooltip.style.top = (e.pageY + 15) + "px";
+          tooltip.style.left = (e.pageX + 15) + "px";
+        });
+
+        el.addEventListener('mouseout', () => {
+          document.getElementById('tooltip').style.display = "none";
+        });
+
+        el.addEventListener('click', () => {
+          location.href = '/dettaglio/' + paese.alpha2code;
+        });
+      } else {
+        console.warn("⚠️ elemento non trovato per:", paese.alpha2code);
+      }
+    });
+  });
+</script>
 
 </body>

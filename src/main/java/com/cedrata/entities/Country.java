@@ -20,10 +20,10 @@ public class Country {
 	private String flag;
 	
 	
-	public String getAlpha2Code() {
+	public String getAlpha2code() {
 		return alpha2code;
 	}
-	public void setAlpha2Code(String alpha2Code) {
+	public void setAlpha2code(String alpha2Code) {
 		this.alpha2code = alpha2Code;
 	}
 	public String getCapital() {
