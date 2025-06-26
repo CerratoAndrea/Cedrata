@@ -35,5 +35,10 @@ public class CountryServiceImpl implements CountryService {
 		
 		return getCountries().get(random);
 	}
+	
+	@Override
+    public Country getByAlpha2Code(String code) {
+        return repo.findByAlpha2code(code.toUpperCase());
+    }
 
 }

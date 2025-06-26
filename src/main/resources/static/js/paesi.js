@@ -53,7 +53,7 @@ window.addEventListener("load", () => {
       });
 
       p.addEventListener('click', () => {
-        window.location.href = '/dettaglio/' + paese.alpha2code;
+        window.location.href = '/country?code=' + paese.alpha2code;
       });
     });
   }

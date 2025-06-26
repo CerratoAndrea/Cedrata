@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${country.name}">Dettagli Paese</title>
+  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+</head>
+<body>
+<main class="container">
+  <h1 th:text="${country.name}">Nome Paese</h1>
+  <img th:src="${country.flag}" alt="Bandiera" width="200" />
+
+  <ul>
+    <li><strong>Capitale:</strong> <span th:text="${country.capital}">Capitale</span></li>
+    <li><strong>Popolazione:</strong> <span th:text="${country.population}">Popolazione</span></li>
+    <li><strong>Regione:</strong> <span th:text="${country.region}">Regione</span></li>
+    <li><strong>Sotto-regione:</strong> <span th:text="${country.subregion}">Subregione</span></li>
+    <li><strong>Lingue:</strong>
+      <ul>
+        <li th:each="lang : ${languageNames}" th:text="${lang}">Lingua</li>
+      </ul>
+    </li>
+  </ul>
+
+  <a href="/countries">⬅ Torna all’elenco paesi</a>
+</main>
+</body>
+</html>
