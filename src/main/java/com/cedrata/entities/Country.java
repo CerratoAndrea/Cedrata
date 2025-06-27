@@ -21,16 +21,31 @@ public class Country {
 	
 	@Id
 	private String alpha2code;
+	private String alpha3code;
 	private String capital;
 	private String name;
 	private String region;
 	private String subregion;
     private String population;
+    private String area;
     private Long id;
     
     
     
-    public Long getId() {
+    
+    public String getAlpha3code() {
+		return alpha3code;
+	}
+	public void setAlpha3code(String alpha3code) {
+		this.alpha3code = alpha3code;
+	}
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
+	}
+	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {

@@ -16,22 +16,24 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable()) // puoi rimuovere se non usi API REST o AJAX
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/", 
-                    "/login", 
-                    "/register", 
-                    "/css/**", 
-                    "/js/**", 
-                    "/images/**", 
-                    "/countries",
-                    "/error",
-                    "/flags/**"
-                ).permitAll()
-                .anyRequest().authenticated()
-            )
+    	http
+        .csrf(csrf -> csrf.disable()) 
+        .headers(headers -> headers.frameOptions().sameOrigin()) 
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers(
+                "/", 
+                "/login", 
+                "/register", 
+                "/css/**", 
+                "/js/**", 
+                "/images/**", 
+                "/countries", 
+                "/error", 
+                "/flags/**",
+                "/h2-console/**" // fondamentale!
+            ).permitAll()
+            .anyRequest().authenticated()
+        		)
             .formLogin(form -> form
                 .loginPage("/login")
                 .defaultSuccessUrl("/countries", true) // cambia se vuoi una pagina iniziale diversa
