@@ -26,8 +26,18 @@ public class Country {
 	private String region;
 	private String subregion;
     private String population;
+    private Long id;
     
-    @Lob
+    
+    
+    public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@Lob
     private String languages;
 	
 	@Transient //proprietà non del db

@@ -23,7 +23,7 @@ public class QuizServiceImpl implements QuizService{
     public List<Question> generaQuiz(String difficulty) {
         List<Country> allCountries = countryService.getCountries();
         List<Question> questions = new ArrayList<>();
-
+        
         for (int i = 0; i < 10; i++) {
             Country correct = getRandomCountry(allCountries);
             String questionText;
@@ -55,7 +55,8 @@ public class QuizServiceImpl implements QuizService{
             }
 
             Collections.shuffle(wrongAnswers);
-            questions.add(new Question(questionText, correctAnswer, wrongAnswers));
+            
+//            questions.add(new Question(questionText, correctAnswer, wrongAnswers));
         }
 
         return questions;

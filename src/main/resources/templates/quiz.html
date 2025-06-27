@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     
+    
+    <title>Quiz Semplice</title>
+     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .quiz-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            color: #555;
+        }
+        .answers-list {
+            list-style: none; /* Rimuove i pallini da ul */
+            padding: 0;
+            margin: 0;
+        }
+        .answer-item {
+            background-color: #e9e9e9;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border 0.3s ease;
+            border: 2px solid transparent; /* Bordo per l'effetto selezione */
+            font-size: 1.1em;
+            color: #444;
+        }
+        .answer-item:hover {
+            background-color: #dcdcdc;
+        }
+        .answer-item.selected {
+            background-color: #cce5ff; /* Colore per la risposta selezionata */
+            border: 2px solid #007bff;
+            color: #004085;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 30px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            display: none; /* Inizialmente nascosto */
+        }
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #28a745;
+        }
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="quiz-container">
+        <h2 th:text="${TipoQuiz}">Titolo Quiz Predefinito</h2>
+
+        <div class="question">
+            Qual è la capitale della Francia?
+        </div>
+
+        <div id="answersContainer" class="answers-list">
+            <div class="answer-item" data-value="a">Berlino</div>
+            <div class="answer-item" data-value="b">Madrid</div>
+            <div class="answer-item" data-value="c">Parigi</div>
+            <div class="answer-item" data-value="d">Roma</div>
+        </div>
+
+        <button id="submitButton">Invia Risposta</button>
+
+        <div id="feedback">
+            </div>
+
+    </div>
+
+    <script>
+        const answersContainer = document.getElementById('answersContainer');
+        const answerItems = document.querySelectorAll('.answer-item');
+        const submitButton = document.getElementById('submitButton');
+        const feedbackDiv = document.getElementById('feedback');
+
+        const correctAnswer = 'c'; // Imposta qui la risposta corretta
+        let selectedAnswerValue = null; // Variabile per tenere traccia della risposta selezionata
+
+        // Aggiungi un event listener a ciascun div di risposta
+        answerItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Rimuovi la classe 'selected' da tutti i div di risposta
+                answerItems.forEach(answer => answer.classList.remove('selected'));
+
+                // Aggiungi la classe 'selected' al div cliccato
+                item.classList.add('selected');
+
+                // Salva il valore della risposta selezionata dal data-value
+                selectedAnswerValue = item.dataset.value;
+
+                // Opzionale: Invia automaticamente la risposta al click (come richiesto)
+                // Se vuoi un pulsante "Invia" separato, commenta la riga sotto e usa solo il listener del submitButton
+                submitAnswer();
+            });
+        });
+
+        // Event listener per il pulsante "Invia Risposta" (se non invii automaticamente al click del div)
+        // submitButton.addEventListener('click', submitAnswer); // Decommenta questa riga se non vuoi l'invio automatico
+
+        function submitAnswer() {
+            if (selectedAnswerValue) {
+                if (selectedAnswerValue === correctAnswer) {
+                    feedbackDiv.textContent = 'Corretto! Ottimo lavoro!';
+                    feedbackDiv.className = 'feedback correct';
+                } else {
+                    feedbackDiv.textContent = 'Sbagliato. La risposta corretta era Parigi.';
+                    feedbackDiv.className = 'feedback incorrect';
+                }
+                feedbackDiv.style.display = 'block'; // Mostra il feedback
+            } else {
+                feedbackDiv.textContent = 'Per favore, seleziona una risposta!';
+                feedbackDiv.className = 'feedback incorrect';
+                feedbackDiv.style.display = 'block';
+            }
+        }
+    </script>
+
+
+</body>
+</html>

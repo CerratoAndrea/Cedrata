@@ -1,0 +1,36 @@
+<!--  pagina home di debug -->
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <style>
+  ul {
+    list-style-type: none !important; /* Questa è la proprietà chiave */
+    padding: 0; /* Opzionale: Rimuove il padding predefinito del browser */
+    margin: 0;  /* Opzionale: Rimuove il margin predefinito del browser */
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Ecco i nostri quiz</h1>
+
+    <div class="grid">
+    <ul>
+    	<li>
+    	<a th:href="@{/quiz}" role="button">Inizia Quiz</a>
+    	</li>
+    	<li>
+    	<a th:href="@{/allenamento}" role="button" class="secondary">Allenamento</a>
+    	</li>
+    	<li>
+    	<a th:href="@{/countries}" role="button" class="contrast">Visualizza Paesi</a>
+    	</li>
+    </ul>
+      
+    </div>
+  </div>
+</body>
+</html>

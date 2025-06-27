@@ -22,7 +22,7 @@ public class CountryServiceImpl implements CountryService {
 	}
 
 	@Override
-	public Country getCountryById(String alpha2) {
+	public Country getCountryByAlpha2code(String alpha2) {
 
 		return repo.findById(alpha2).get();
 	}
@@ -40,5 +40,11 @@ public class CountryServiceImpl implements CountryService {
     public Country getByAlpha2Code(String code) {
         return repo.findByAlpha2code(code.toUpperCase());
     }
+
+	@Override
+	public Country getCountryById(Long id) {
+		
+		return repo.findCountryById(id);
+	}
 
 }
