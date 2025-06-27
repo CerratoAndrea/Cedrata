@@ -99,17 +99,16 @@
 <body>
 
     <div class="quiz-container">
-        <h2 th:text="${TipoQuiz}">Titolo Quiz Predefinito</h2>
+        <h2 th:text="${TipoQuiz}">Quiz predefinito</h2>
 
-        <div class="question">
+        <div class="question" th:text="${question.questionText}">
             Qual è la capitale della Francia?
         </div>
 
         <div id="answersContainer" class="answers-list">
-            <div class="answer-item" data-value="a">Berlino</div>
-            <div class="answer-item" data-value="b">Madrid</div>
-            <div class="answer-item" data-value="c">Parigi</div>
-            <div class="answer-item" data-value="d">Roma</div>
+            <div class="answer-item" th:each="option : ${question.options}" th:data-value="${option}" th:text="${option}">
+                Berlino
+            </div>
         </div>
 
         <button id="submitButton">Invia Risposta</button>
@@ -119,35 +118,27 @@
 
     </div>
 
-    <script>
+    <script th:inline="javascript">
+        // Per ottenere il valore corretto dal modello in JavaScript
+        const correctAnswer = /*[[${question.correctAnswerValue}]]*/ 'Parigi';
+
         const answersContainer = document.getElementById('answersContainer');
         const answerItems = document.querySelectorAll('.answer-item');
         const submitButton = document.getElementById('submitButton');
         const feedbackDiv = document.getElementById('feedback');
 
-        const correctAnswer = 'c'; // Imposta qui la risposta corretta
-        let selectedAnswerValue = null; // Variabile per tenere traccia della risposta selezionata
+        let selectedAnswerValue = null;
 
-        // Aggiungi un event listener a ciascun div di risposta
         answerItems.forEach(item => {
             item.addEventListener('click', () => {
-                // Rimuovi la classe 'selected' da tutti i div di risposta
                 answerItems.forEach(answer => answer.classList.remove('selected'));
-
-                // Aggiungi la classe 'selected' al div cliccato
                 item.classList.add('selected');
-
-                // Salva il valore della risposta selezionata dal data-value
                 selectedAnswerValue = item.dataset.value;
 
-                // Opzionale: Invia automaticamente la risposta al click (come richiesto)
-                // Se vuoi un pulsante "Invia" separato, commenta la riga sotto e usa solo il listener del submitButton
+                // Invio automatico della risposta al click
                 submitAnswer();
             });
         });
-
-        // Event listener per il pulsante "Invia Risposta" (se non invii automaticamente al click del div)
-        // submitButton.addEventListener('click', submitAnswer); // Decommenta questa riga se non vuoi l'invio automatico
 
         function submitAnswer() {
             if (selectedAnswerValue) {
@@ -155,10 +146,10 @@
                     feedbackDiv.textContent = 'Corretto! Ottimo lavoro!';
                     feedbackDiv.className = 'feedback correct';
                 } else {
-                    feedbackDiv.textContent = 'Sbagliato. La risposta corretta era Parigi.';
+                    feedbackDiv.textContent = 'Sbagliato. La risposta corretta era ' + correctAnswer + '.';
                     feedbackDiv.className = 'feedback incorrect';
                 }
-                feedbackDiv.style.display = 'block'; // Mostra il feedback
+                feedbackDiv.style.display = 'block';
             } else {
                 feedbackDiv.textContent = 'Per favore, seleziona una risposta!';
                 feedbackDiv.className = 'feedback incorrect';
@@ -166,7 +157,6 @@
             }
         }
     </script>
-
 
 </body>
 </html>
