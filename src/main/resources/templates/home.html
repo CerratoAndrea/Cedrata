@@ -10,13 +10,6 @@
   <div class="container">
     <h1>Benvenuto!</h1>
 
-    <p th:if="${#authorization.expr('isAuthenticated()')}">
-      Loggato come <strong th:text="${#authentication.name}">username</strong>
-    </p>
-    <p th:if="${not #authorization.expr('isAuthenticated()')}">
-      <a th:href="@{/login}">Login</a> o <a th:href="@{/register}">Registrati</a> per salvare i tuoi punteggi!
-    </p>
-
     <div class="grid">
       <a th:href="@{/quiz}" role="button">Inizia Quiz</a>
       <a th:href="@{/allenamento}" role="button" class="secondary">Allenamento</a>
