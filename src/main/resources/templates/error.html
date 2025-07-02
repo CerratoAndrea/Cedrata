@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Errore</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+    
+    <style>   
+	    a:hover {
+	      color: white; /* colore al passaggio del mouse */
+	    }
+  	</style>
+</head>
+<body>
+
+<main class="container">
+    <h1>Errore</h1>
+    <p th:if="${statusCode}">Codice errore: <strong th:text="${statusCode}"></strong></p>
+
+    <p>
+	    <form th:action="@{/logout}" method="post">
+			<button >Torna alla Login</button>
+		</form>
+    </p>
+</main>
+
+</body>
+</html>

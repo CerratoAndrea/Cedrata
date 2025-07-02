@@ -24,7 +24,7 @@
 	  	<div class="min-vh-100 d-flex flex-grow-1 justify-content-center align-items-center p-2">	
 			<div style="width:30%">
 				<div class="card shadow">
-					  <div class="card-header"><h4 th:text="'QUIZ '+${numeroDomanda}+'/5'"></h4></div>
+					  <div class="card-header"><h4>ALLENAMENTO</h4></div>
 					  
 					  <div class="card-body">			    
 					    <form id="verificaForm" method="post" th:action="@{/quiz}" th:object="${quiz}" th:if="${esito == null}">
@@ -55,11 +55,9 @@
 						<div th:if="${esito == null}">
 							<button type="submit" onClick="javascript:verificaRisposta();" style="width: 100%">Verifica risposta</button>
 						</div>				
-						<div th:if="${esito != null and numeroDomanda < 5}">
-							<a th:href="@{'/quiz?difficolta=' + ${quiz.difficolta} + '&numeroDomanda='+${quiz.numeroDomanda}}" role="button" style="width: 100%">Prossima domanda</a>
-					    </div>
-					    <div th:if="${esito != null and numeroDomanda == 5}">
-							<a th:href="@{'/score_sessione'}" role="button" style="width: 100%">Vai ai risultati</a>
+						<div th:if="${esito != null}">
+							<a th:href="@{'/allenamento'}" role="button">Prossima domanda</a>
+							<a th:href="@{'/home'}" role="button" >Termina</a>
 					    </div>
 				 	  </div>
 			    </div>  
@@ -72,7 +70,7 @@
 <script type="text/javascript">	
 		function verificaRisposta(){			
 			const isChecked = document.querySelector('input[name="rispostaUtente"]:checked');
-			const timeout   = document.getElementById('timeout');
+			const timeout = document.getElementById('timeout');
 			
 			if(timeout){
 				const radioButtons = document.querySelectorAll('input[type="radio"]');
