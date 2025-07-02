@@ -88,16 +88,39 @@ public class QuizController {
         
         boolean rispostaCorretta = false;
         String rispostaUtente = quiz.getRispostaUtente();
-        String rispostaCorrettaValida = quiz.getRispostaCorretta();
+        String correttaValida = quiz.getRispostaCorretta();
 
         String esito;
+        String tipo = quiz.getTipo();
+
+        // Per bandiere: costruisci risposta descrittiva con immagine
+        String rispDescr = correttaValida;
+
+        System.out.println("TIPO DEL QUIZ: " + tipo);
+        System.out.println("RISPOSTA CORRETTA GREZZA: " + correttaValida);
+        
+        if ("bandiera".equalsIgnoreCase(tipo)) {
+            Country paeseCorretto = countryService.findAll().stream()
+                .filter(c -> c.getAlpha2Code() != null && c.getAlpha2Code().equalsIgnoreCase(correttaValida))
+                .findFirst()
+                .orElse(null);
+
+            if (paeseCorretto != null) {
+                String codice = paeseCorretto.getAlpha2Code().toLowerCase(); // per .png
+                String nome = paeseCorretto.getName();
+
+                rispDescr = "la bandiera di " + nome +
+                    "<br><img src='/flags/" + codice + ".png' style='width:100px; border: 1px solid #ccc; padding: 5px;'>";
+            }
+        }
+
         if (rispostaUtente == null) {
-            esito = "Tempo scaduto! La risposta corretta era: " + rispostaCorrettaValida;
-        } else if (rispostaUtente.equalsIgnoreCase(rispostaCorrettaValida)) {
-            esito = "✅ Risposta corretta!";
+            esito = "<strong>Tempo scaduto!</strong><br>La risposta corretta era: " + rispDescr;
+        } else if (rispostaUtente.equalsIgnoreCase(correttaValida)) {
+            esito = "<strong>Risposta corretta!</strong>";
             rispostaCorretta = true;
         } else {
-            esito = "❌ Errore! La risposta corretta era: " + rispostaCorrettaValida;
+            esito = "<strong>Sbagliato ahahaha!</strong><br>La risposta corretta era: " + rispDescr;
         }
         
         // quiz vero -> salvo lo score
@@ -110,7 +133,7 @@ public class QuizController {
 	            score.setUser(optionalUser.get());
 	            score.setDomanda(quiz.getDomanda());
 	            score.setRispostaUtente(rispostaUtente); // può essere null
-	            score.setRispostaCorretta(rispostaCorrettaValida);
+	            score.setRispostaCorretta(correttaValida);
 	            score.setCorretto(rispostaCorretta);
 	            score.setDifficolta(quiz.getDifficolta());
 	            score.setSessione((Long)session.getAttribute("session_"+principal.getName()));

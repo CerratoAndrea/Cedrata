@@ -31,16 +31,29 @@
 					        <p><strong th:text="${quiz.domanda}"></strong></p>
 					         
 					        <fieldset>
-					            <label th:each="risposta : ${quiz.opzioni}">
-					                <input type="radio" th:field="*{rispostaUtente}" th:value="${risposta}" required />
-					                <span th:text="${risposta}"></span>
-					            </label>
-					        </fieldset>
-					
+
+							<div th:if="${quiz.tipo == 'bandiera'}" class="d-flex flex-wrap justify-content-between gap-2">
+								<label th:each="risposta : ${quiz.opzioni}" class="text-center" style="flex: 1 1 45%;">
+									<input type="radio" th:field="*{rispostaUtente}" th:value="${risposta}" required />
+									<img th:src="@{'/flags/' + ${#strings.toLowerCase(risposta)} + '.png'}"
+										alt="Bandiera"
+										style="width: 100%; max-width: 120px; height: auto; border: 1px solid #ccc; padding: 5px;">
+								</label>
+							</div>
+
+							<div th:if="${quiz.tipo != 'bandiera'}">
+								<label th:each="risposta : ${quiz.opzioni}">
+									<input type="radio" th:field="*{rispostaUtente}" th:value="${risposta}" required />
+									<span th:text="${risposta}"></span>
+								</label>
+							</div>
+						</fieldset>
+											
 					        <input type="hidden" th:field="*{rispostaCorretta}" />
 					        <input type="hidden" th:field="*{difficolta}" />
 					        <input type="hidden" th:field="*{domanda}" />
 					        <input type="hidden" name="numeroDomanda" th:field="*{numeroDomanda}" />
+							<input type="hidden" th:field="*{tipo}" />
 					        				
 							<div id="timer" th:if="${esito == null}" style="font-weight: bold; color: crimson;" class="pb-4">
 						        Tempo rimasto: <span id="countdown">10</span> secondi
@@ -48,7 +61,7 @@
 					    </form>
 					    
 					    <div th:if="${esito}">        					
-							<p th:if="${esito}"  th:text="${esito}" th:classappend="${#strings.contains(esito, 'Tempo scaduto')} ? 'text-danger' : ''"></p>
+							<p th:if="${esito}"  th:utext="${esito}" th:classappend="${#strings.contains(esito, 'Tempo scaduto')} ? 'text-danger' : ''"></p>
 					    </div>
 					  </div>
 					  <div class="card-footer">

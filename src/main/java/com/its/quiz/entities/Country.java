@@ -10,7 +10,6 @@ public class Country {
 
     @Id
     private String alpha3Code;
-    
     private String alpha2Code;
     private Long population;
     private String name;

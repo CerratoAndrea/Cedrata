@@ -23,17 +23,38 @@ public class QuizService {
 
         Quiz quiz = new Quiz();
 
-        // Tipo random tra capitale o lingua e popolazione
+        //random tra capitale o lingua e popolazione a seconda della difficoltà
+        String tipo;
         double random = Math.random();
-        
-        String tipo = null;
-        if(random < 0.33)
-        	tipo = "capitale";
-        else if (random < 0.66)
-    		tipo = "lingua";
-        else
-        	tipo = "popolazione";
-        
+
+        switch (difficolta.toLowerCase()) {
+            case "facile":
+                // solo capitale o bandiera
+                tipo = random < 0.5 ? "capitale" : "bandiera";
+                break;
+            case "normale":
+                // capitale, bandiera o lingua
+                if (random < 0.33)
+                    tipo = "capitale";
+                else if (random < 0.66)
+                    tipo = "bandiera";
+                else
+                    tipo = "lingua";
+                break;
+            case "difficile":
+            default:
+                // capitale, lingua, popolazione, bandiera
+                if (random < 0.25)
+                    tipo = "capitale";
+                else if (random < 0.5)
+                    tipo = "lingua";
+                else if (random < 0.75)
+                    tipo = "popolazione";
+                else
+                    tipo = "bandiera";
+                break;
+        }
+
         quiz.setTipo(tipo);
         
         int numeroDomande = 3;
@@ -56,7 +77,8 @@ public class QuizService {
             int i = 1;
             while (listaOpzioni.size() < numeroDomande && i < paesi.size()) {
                 String capitaleErrata = paesi.get(i).getCapital();
-                if (capitaleErrata != null && !listaOpzioni.contains(capitaleErrata)) {
+                if (capitaleErrata != null 
+                		&& !listaOpzioni.contains(capitaleErrata)) {
                 	listaOpzioni.add(capitaleErrata);
                 }
                 i++;
@@ -98,7 +120,31 @@ public class QuizService {
             quiz.setOpzioni(listaOpzioni);
             quiz.setRispostaCorretta(rispostaCorretta[0]);
         }
-        else {
+        else if (tipo.equals("bandiera")) {
+            Country corretto = paesi.stream()
+                    .filter(c -> c.getAlpha2Code() != null && !c.getAlpha2Code().isBlank())
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Nessun paese con codice Alpha2 valido"));
+
+            List<String> listaOpzioni = new ArrayList<>();
+            listaOpzioni.add(corretto.getAlpha2Code());
+
+            int i = 1;
+            while (listaOpzioni.size() < numeroDomande && i < paesi.size()) {
+                String code = paesi.get(i++).getAlpha2Code();
+                if (code != null && !listaOpzioni.contains(code)) {
+                    listaOpzioni.add(code);
+                }
+            }
+
+            Collections.shuffle(listaOpzioni);
+
+            quiz.setDomanda("Qual è la bandiera di " + corretto.getName() + "?");
+            quiz.setOpzioni(listaOpzioni);
+            quiz.setRispostaCorretta(corretto.getAlpha2Code());
+        } 
+        
+        else {	//blocco popolazione
         	Country corretto = paesi.stream()
                                     .filter(c -> c.getPopulation() != null)
                                     .findFirst()
