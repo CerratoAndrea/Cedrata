@@ -23,6 +23,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+        	.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
             		.requestMatchers("/", 
             						 "/login", 
@@ -30,7 +31,8 @@ public class SecurityConfig {
             						 "/css/**",
             						 "/flags/**",
             						 "/img/**",
-            						 "/js/**").permitAll()
+            						 "/js/**",
+            						 "/h2-console/**").permitAll()
             		.anyRequest().authenticated()
             )
             .formLogin(login -> login
@@ -46,6 +48,7 @@ public class SecurityConfig {
                     .clearAuthentication(true)                   
                     .deleteCookies("JSESSIONID")               
                 )
+            .headers(headers -> headers.frameOptions().sameOrigin())
             .build();
     }
 

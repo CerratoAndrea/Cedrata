@@ -1,33 +1,43 @@
-CREATE TABLE countries (
-    alpha2code VARCHAR(2) PRIMARY KEY,
-    alpha3code VARCHAR(3),
-    capital VARCHAR(100),
-    name VARCHAR(100),
-    region VARCHAR(50),
-    subregion VARCHAR(100),
-    population VARCHAR(50),
-    area VARCHAR(50),
-    id BIGINT,
-    languages CLOB
+
+drop table scores;
+drop table users;
+drop table countries;
+
+CREATE TABLE `countries` (
+  `alpha2code` varchar(2) NOT NULL,
+  `alpha3code` varchar(3) DEFAULT NULL,
+  `capital` varchar(100) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `region` varchar(50) DEFAULT NULL,
+  `subregion` VARCHAR(100),
+  `population` varchar(50) DEFAULT NULL,
+  `languages` text DEFAULT NULL,
+  `area` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`alpha2code`)
 );
 
-CREATE TABLE users (
-    id BIGINT AUTO_INCREMENT,                   -- ID utente univoco
-    username VARCHAR(100) NOT NULL UNIQUE,      -- Username univoco
-    password VARCHAR(255) NOT NULL,             -- Password (criptata)
-    role VARCHAR(50) DEFAULT 'USER',            -- Ruolo (USER, ADMIN, ecc.)
-    CONSTRAINT pk_users PRIMARY KEY (id)
+CREATE TABLE `users` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` varchar(50) DEFAULT 'USER',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
 );
 
-CREATE TABLE quiz_score (
-    id BIGINT AUTO_INCREMENT,
-    user_id BIGINT,
-    difficulty_level VARCHAR(20),
-    correct_answers INT NOT NULL,
-    total_questions INT NOT NULL,
-    dt_attempt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT pk_quiz_score PRIMARY KEY (id),
-    CONSTRAINT fk_quiz_score_user FOREIGN KEY (user_id) REFERENCES users(id)
+CREATE TABLE `scores` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint DEFAULT NULL,
+  `domanda` varchar(4000) DEFAULT NULL,
+  `difficolta` varchar(20) DEFAULT NULL,
+  `risposta_corretta` varchar(4000) DEFAULT NULL,
+  `risposta_utente` varchar(4000) DEFAULT NULL,
+  `corretto` tinyint(1) DEFAULT NULL,
+  `data` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `sessione` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_scores_user` (`user_id`),
+  CONSTRAINT `fk_scores_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 );
 
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('AF', 'AFG', 'Afghanistan', 'Kabul', 'Asia', '38928341', '652230', 'pashto, dari');
@@ -48,22 +58,22 @@ INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('BT', 'BTN', 'Bhutan', 'Thimphu', 'Asia', '771612', '38394', 'dzongkha');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('BA', 'BIH', 'Bosnia and Herzegovina', 'Sarajevo', 'Europe', '3280815', '51209', 'bosnian, croatian, serbian');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('BW', 'BWA', 'Botswana', 'Gaborone', 'Africa', '2351625', '582000', 'english, tswana');
-INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('BR', 'BRA', 'Brazil', 'Brasília', 'Americas', '212559409', '8515767', 'portuguese');
+INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('BR', 'BRA', 'Brazil', 'Bras�lia', 'Americas', '212559409', '8515767', 'portuguese');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('BG', 'BGR', 'Bulgaria', 'Sofia', 'Europe', '6927288', '110879', 'bulgarian');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('BF', 'BFA', 'Burkina Faso', 'Ouagadougou', 'Africa', '20903278', '272967', 'french');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('BI', 'BDI', 'Burundi', 'Gitega', 'Africa', '11890781', '27834', 'kirundi, french, english');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('KH', 'KHM', 'Cambodia', 'Phnom Penh', 'Asia', '16718971', '181035', 'khmer');
-INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('CM', 'CMR', 'Cameroon', 'Yaoundé', 'Africa', '26545864', '475442', 'english, french');
+INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('CM', 'CMR', 'Cameroon', 'Yaound�', 'Africa', '26545864', '475442', 'english, french');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('CA', 'CAN', 'Canada', 'Ottawa', 'Americas', '38005238', '9984670', 'english, french');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('CV', 'CPV', 'Cabo Verde', 'Praia', 'Africa', '555988', '4033', 'portuguese');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('CF', 'CAF', 'Central African Republic', 'Bangui', 'Africa', '4829764', '622984', 'french, sango');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('TD', 'TCD', 'Chad', 'N''''Djamena', 'Africa', '16425859', '1284000', 'french, arabic');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('CL', 'CHL', 'Chile', 'Santiago', 'Americas', '19116209', '756102', 'spanish');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('CN', 'CHN', 'China', 'Beijing', 'Asia', '1402112000', '9640011', 'chinese');
-INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('CO', 'COL', 'Colombia', 'Bogotá', 'Americas', '50882884', '1141748', 'spanish');
+INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('CO', 'COL', 'Colombia', 'Bogot�', 'Americas', '50882884', '1141748', 'spanish');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('KM', 'COM', 'Comoros', 'Moroni', 'Africa', '869595', '1862', 'arabic, french, comorian');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('CG', 'COG', 'Congo', 'Brazzaville', 'Africa', '5518092', '342000', 'french');
-INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('CR', 'CRI', 'Costa Rica', 'San José', 'Americas', '5094114', '51100', 'spanish');
+INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('CR', 'CRI', 'Costa Rica', 'San Jos�', 'Americas', '5094114', '51100', 'spanish');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('HR', 'HRV', 'Croatia', 'Zagreb', 'Europe', '4047200', '56594', 'croatian');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('CU', 'CUB', 'Cuba', 'Havana', 'Americas', '11326616', '109884', 'spanish');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('CY', 'CYP', 'Cyprus', 'Nicosia', 'Europe', '1207361', '9251', 'greek, turkish');
@@ -94,10 +104,10 @@ INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('HN', 'HND', 'Honduras', 'Tegucigalpa', 'Americas', '9904608', '112492', 'spanish');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('HK', 'HKG', 'Hong Kong', 'City of Victoria', 'Asia', '7481800', '1104', 'chinese, english');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('HU', 'HUN', 'Hungary', 'Budapest', 'Europe', '9749763', '93028', 'hungarian');
-INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('IS', 'ISL', 'Iceland', 'Reykjavík', 'Europe', '366425', '103000', 'icelandic');
+INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('IS', 'ISL', 'Iceland', 'Reykjav�k', 'Europe', '366425', '103000', 'icelandic');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('IN', 'IND', 'India', 'New Delhi', 'Asia', '1380004385', '3287590', 'hindi, english');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('ID', 'IDN', 'Indonesia', 'Jakarta', 'Asia', '273523621', '1904569', 'indonesian');
-INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('CI', 'CIV', 'Côte d''''Ivoire', 'Yamoussoukro', 'Africa', '26378275', '322463', 'french');
+INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('CI', 'CIV', 'C�te d''''Ivoire', 'Yamoussoukro', 'Africa', '26378275', '322463', 'french');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('IQ', 'IRQ', 'Iraq', 'Baghdad', 'Asia', '40222503', '438317', 'arabic, kurdish');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('IE', 'IRL', 'Ireland', 'Dublin', 'Europe', '4994724', '70273', 'irish, english');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('IL', 'ISR', 'Israel', 'Jerusalem', 'Asia', '9216900', '20770', 'hebrew');
@@ -121,7 +131,7 @@ INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('MG', 'MDG', 'Madagascar', 'Antananarivo', 'Africa', '27691019', '587041', 'malagasy, french');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('MW', 'MWI', 'Malawi', 'Lilongwe', 'Africa', '19129955', '118484', 'english, chichewa');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('MY', 'MYS', 'Malaysia', 'Kuala Lumpur', 'Asia', '32365998', '330803', 'malay');
-INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('MV', 'MDV', 'Maldives', 'Malé', 'Asia', '540542', '300', 'dhivehi');
+INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('MV', 'MDV', 'Maldives', 'Mal�', 'Asia', '540542', '300', 'dhivehi');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('ML', 'MLI', 'Mali', 'Bamako', 'Africa', '20250834', '1240192', 'french');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('MT', 'MLT', 'Malta', 'Valletta', 'Europe', '525285', '316', 'maltese, english');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('MR', 'MRT', 'Mauritania', 'Nouakchott', 'Africa', '4649660', '1030700', 'arabic');
@@ -144,7 +154,7 @@ INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('PK', 'PAK', 'Pakistan', 'Islamabad', 'Asia', '220892331', '881912', 'urdu, english');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('PA', 'PAN', 'Panama', 'Panama City', 'Americas', '4314768', '75417', 'spanish');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('PG', 'PNG', 'Papua New Guinea', 'Port Moresby', 'Oceania', '8947027', '462840', 'english, hiri motu, tok pisin');
-INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('PY', 'PRY', 'Paraguay', 'Asunción', 'Americas', '7132530', '406752', 'spanish, guarani');
+INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('PY', 'PRY', 'Paraguay', 'Asunci�n', 'Americas', '7132530', '406752', 'spanish, guarani');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('PE', 'PER', 'Peru', 'Lima', 'Americas', '32971846', '1285216', 'spanish, quechua, aymara');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('PH', 'PHL', 'Philippines', 'Manila', 'Asia', '109581085', '342353', 'filipino, english');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('PL', 'POL', 'Poland', 'Warsaw', 'Europe', '37950802', '312679', 'polish');
@@ -154,7 +164,7 @@ INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('RU', 'RUS', 'Russian Federation', 'Moscow', 'Europe', '144104080', '17124442', 'russian');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('RW', 'RWA', 'Rwanda', 'Kigali', 'Africa', '12952209', '26338', 'kinyarwanda, french, english');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('LC', 'LCA', 'Saint Lucia', 'Castries', 'Americas', '183629', '616', 'english');
-INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('ST', 'STP', 'Sao Tome and Principe', 'São Tomé', 'Africa', '219161', '964', 'portuguese');
+INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('ST', 'STP', 'Sao Tome and Principe', 'S�o Tom�', 'Africa', '219161', '964', 'portuguese');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('SA', 'SAU', 'Saudi Arabia', 'Riyadh', 'Asia', '34813867', '2149690', 'arabic');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('SN', 'SEN', 'Senegal', 'Dakar', 'Africa', '16743930', '196722', 'french');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('RS', 'SRB', 'Serbia', 'Belgrade', 'Europe', '6908224', '88361', 'serbian');
@@ -176,10 +186,10 @@ INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('SY', 'SYR', 'Syrian Arab Republic', 'Damascus', 'Asia', '17500657', '185180', 'arabic');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('TW', 'TWN', 'Taiwan', 'Taipei', 'Asia', '23503349', '36193', 'mandarin');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('TJ', 'TJK', 'Tajikistan', 'Dushanbe', 'Asia', '9537642', '143100', 'tajik');
-INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('TZ', 'TZA', 'Tanzania', 'United Republic of', 'Dodoma', 'Africa', '59734213', '945087');
+INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('TZ', 'TZA', 'Tanzania', 'United Republic of', 'Dodoma', '59734213', '59734213', 'english');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('TH', 'THA', 'Thailand', 'Bangkok', 'Asia', '69799978', '513120', 'thai');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('TL', 'TLS', 'Timor-Leste', 'Dili', 'Asia', '1318442', '14874', 'portuguese, tetum');
-INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('TG', 'TGO', 'Togo', 'Lomé', 'Africa', '8278737', '56785', 'french');
+INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('TG', 'TGO', 'Togo', 'Lom�', 'Africa', '8278737', '56785', 'french');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('TT', 'TTO', 'Trinidad and Tobago', 'Port of Spain', 'Americas', '1399491', '5130', 'english');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('TN', 'TUN', 'Tunisia', 'Tunis', 'Africa', '11818618', '163610', 'arabic');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('TR', 'TUR', 'Turkey', 'Ankara', 'Asia', '84339067', '783562', 'turkish');
@@ -188,10 +198,11 @@ INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('UA', 'UKR', 'Ukraine', 'Kyiv', 'Europe', '44134693', '603700', 'ukrainian');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('AE', 'ARE', 'United Arab Emirates', 'Abu Dhabi', 'Asia', '9890400', '83600', 'arabic');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('GB', 'GBR', 'United Kingdom', 'London', 'Europe', '67886004', '242900', 'english');
-INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('US', 'USA', 'United States of America', 'Washington', 'D.C.', 'Americas', '329484123', '9629091');
+INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('US', 'USA', 'United States of America', 'Washington', 'D.C.', '329484123', '329484123', 'english');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('UY', 'URY', 'Uruguay', 'Montevideo', 'Americas', '3473727', '181034', 'spanish');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('UZ', 'UZB', 'Uzbekistan', 'Tashkent', 'Asia', '34232050', '447400', 'uzbek');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('VN', 'VNM', 'Vietnam', 'Hanoi', 'Asia', '97338583', '331212', 'vietnamese');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('YE', 'YEM', 'Yemen', 'Sana''''a', 'Asia', '29825968', '527968', 'arabic');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('ZM', 'ZMB', 'Zambia', 'Lusaka', 'Africa', '18383956', '752612', 'english');
 INSERT INTO countries (alpha2code, alpha3code, name, capital, region, population, area, languages) VALUES ('ZW', 'ZWE', 'Zimbabwe', 'Harare', 'Africa', '14862927', '390757', 'english, shona, sindebele');
+commit;
