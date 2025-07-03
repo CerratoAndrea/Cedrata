@@ -1,6 +1,8 @@
+// prendo i dati dei paesi dal backend
 const paesi = window.paesi || [];
-
+// aspetto che tutta la pagina sia caricata
 window.addEventListener("load", () => {
+   // carico la mappa svg dal server
   fetch('/svg/world.svg')
     .then(res => res.text())
     .then(svgText => {
@@ -25,7 +27,7 @@ window.addEventListener("load", () => {
       rendiInterattivo(el, paese, tooltip);
     });
   }
-
+  // funzione che aggiunge gli eventi mouseover, mousemove, click ecc.
   function rendiInterattivo(el, paese, tooltip) {
 		const targets = el.tagName === "g" ? el.querySelectorAll("path, circle, rect") : [el];
 
@@ -33,6 +35,7 @@ window.addEventListener("load", () => {
       p.classList.add("land");
       p.style.cursor = "pointer";
 
+      // quando passo sopra, mostro tooltip con bandiera e info
       p.addEventListener('mouseover', e => {
         tooltip.innerHTML = `
           <img src="/flags/${paese.alpha2Code.toLowerCase()}.png" width="60" alt="Bandiera ${paese.name}"><br>
@@ -52,7 +55,7 @@ window.addEventListener("load", () => {
       p.addEventListener('mouseout', () => {
         tooltip.style.display = "none";
       });
-
+      // cliccando su un paese vado alla pagina con i dettagli
       p.addEventListener('click', () => {
         window.location.href = '/country?code=' + paese.alpha2Code;
       });

@@ -17,7 +17,7 @@
   <!-- Intestazione -->
   <div class="text-center mb-4">
     <div class="overlay-box mx-auto" style="max-width: 500px;">
-      <h1 class="text-light">Quiz Geografico</h1>
+      <h1 class="text-light">Benvenuti al nostro Quiz Geografico!</h1>
       <h5 class="text-secondary pt-2">Benvenuto, <span th:text="${username}">USERNAME</span></h5>
       
       <div class="text-center mt-3">
@@ -33,7 +33,7 @@
         <a href="/classifica" class="btn btn-light-outline btn-custom">Classifica</a>
         <a href="/score" class="btn btn-light-outline btn-custom">I miei risultati</a>
         <a href="/allenamento" class="btn btn-light-outline btn-custom">Allenamento</a>
-        <a href="/countries" class="btn btn-light-outline btn-custom">Paesi del mondo</a>
+        <a href="/countries" class="btn btn-light-outline btn-custom">Mappamondo interattivo</a>
         <form th:action="@{/logout}" method="post">
           <button class="btn btn-outline-danger btn-custom">Logout</button>
         </form>

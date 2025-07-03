@@ -24,7 +24,7 @@
         <p><strong th:text="${quiz.domanda}"></strong></p>
 
         <fieldset>
-          <!-- Domande bandiera -->
+          <!-- domande bandiera -->
           <div th:if="${quiz.tipo == 'bandiera'}" class="flag-grid">
             <label th:each="risposta : ${quiz.opzioni}" class="d-flex flex-column align-items-center">
               <input type="radio" th:field="*{rispostaUtente}" th:value="${risposta}" required />
@@ -34,7 +34,7 @@
             </label>
           </div>
 
-          <!-- Domande testo o popolazione -->
+          <!-- domande testo o popolazione -->
           <div th:if="${quiz.tipo != 'bandiera'}" class="pt-2">
             <div th:each="risposta : ${quiz.opzioni}" class="form-check">
               <label class="form-check-label">
@@ -48,20 +48,20 @@
           </div>
         </fieldset>
 
-        <!-- Hidden fields -->
+        <!-- hidden fields -->
         <input type="hidden" th:field="*{rispostaCorretta}" />
         <input type="hidden" th:field="*{difficolta}" />
         <input type="hidden" th:field="*{domanda}" />
         <input type="hidden" name="numeroDomanda" th:field="*{numeroDomanda}" />
         <input type="hidden" th:field="*{tipo}" />
 
-        <!-- Timer -->
+        <!-- timer -->
         <div id="timer" th:if="${esito == null}" class="pt-3 fw-bold text-danger text-center">
           Tempo rimasto: <span id="countdown">10</span> secondi
         </div>
       </form>
 
-      <!-- Esito -->
+      <!-- esito -->
       <div th:if="${esito}" class="pt-3 text-center">
         <p th:utext="${esito}" th:classappend="${#strings.contains(esito, 'Tempo scaduto')} ? 'text-danger' : ''"></p>
       </div>
