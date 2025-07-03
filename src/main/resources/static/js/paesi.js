@@ -27,7 +27,7 @@ window.addEventListener("load", () => {
   }
 
   function rendiInterattivo(el, paese, tooltip) {
-    const targets = el.tagName === "g" ? el.querySelectorAll("path") : [el];
+		const targets = el.tagName === "g" ? el.querySelectorAll("path, circle, rect") : [el];
 
     targets.forEach(p => {
       p.classList.add("land");

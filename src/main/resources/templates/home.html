@@ -2,87 +2,70 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Bookathlon - Homepage</title>
+  <title>Homepage</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+      <link rel="stylesheet" th:href="@{/css/home.css}">
 
-  <style>
-    body {
-      background-image: url('/img/world_light.svg');
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
-      min-height: 100vh;
-      font-family: 'Segoe UI', sans-serif;
-      overflow-x: hidden;
-    }
 
-    .overlay-box {
-      background-color: rgba(255, 255, 255, 0.85);
-      border-radius: 15px;
-      padding: 1.5rem;
-    }
 
-    h1, h2 {
-      font-weight: 700;
-    }
-
-    .btn-custom {
-      min-width: 200px;
-      margin: 0.5rem;
-      font-weight: 600;
-      border-radius: 12px;
-    }
-
-    .memory-btn {
-      background-color: #6f42c1;
-      color: white;
-    }
-
-    .memory-btn:hover {
-      background-color: #5936a7;
-      color: white;
-    }
-  </style>
 </head>
 <body>
 <main class="container py-5">
+  <!-- Intestazione -->
   <div class="text-center mb-4">
     <div class="overlay-box mx-auto" style="max-width: 500px;">
-      <h1 class="text-primary">🌍 QUIZ GEOGRAFICO</h1>
-      <h5 class="text-dark pt-2">Concorrente: <span th:text="${username}">USERNAME</span></h5>
+      <h1 class="text-light">Quiz Geografico</h1>
+      <h5 class="text-secondary pt-2">Benvenuto, <span th:text="${username}">USERNAME</span></h5>
+      
+      <div class="text-center mt-3">
+        <img src="/img/cedrata.png" alt="Logo Cedrata" style="max-width: 300px;">
+      </div>
     </div>
   </div>
 
-  <div class="row justify-content-center mb-4">
+  <!-- Sezione info -->
+  <div class="row justify-content-center section-box">
     <div class="col-md-10">
       <div class="overlay-box d-flex flex-wrap justify-content-around text-center">
-        <a href="/classifica" class="btn btn-outline-primary btn-custom">📈 Classifica</a>
-        <a href="/score" class="btn btn-outline-success btn-custom">📊 I miei risultati</a>
-        <a href="/allenamento" class="btn btn-outline-warning btn-custom">🧪 Allenamento</a>
-        <a href="/countries" class="btn btn-outline-info btn-custom">🌐 Paesi del mondo</a>
+        <a href="/classifica" class="btn btn-light-outline btn-custom">Classifica</a>
+        <a href="/score" class="btn btn-light-outline btn-custom">I miei risultati</a>
+        <a href="/allenamento" class="btn btn-light-outline btn-custom">Allenamento</a>
+        <a href="/countries" class="btn btn-light-outline btn-custom">Paesi del mondo</a>
         <form th:action="@{/logout}" method="post">
-          <button class="btn btn-outline-danger btn-custom">🚪 Logout</button>
+          <button class="btn btn-outline-danger btn-custom">Logout</button>
         </form>
       </div>
     </div>
   </div>
 
-  <div class="text-center mb-3">
-    <div class="overlay-box mx-auto" style="max-width: 500px;">
-      <h2 class="text-success">🎮 GIOCA</h2>
+  <!-- Sezione quiz -->
+  <div class="text-center section-title">
+    <h2 class="text-info">Modalità Quiz</h2>
+  </div>
+
+  <div class="row justify-content-center section-box">
+    <div class="col-md-10">
+      <div class="overlay-box d-flex flex-wrap justify-content-around text-center">
+        <a href="/quiz?difficolta=facile" class="btn btn-success btn-custom">Livello Facile</a>
+        <a href="/quiz?difficolta=normale" class="btn btn-warning btn-custom">Livello Medio</a>
+        <a href="/quiz?difficolta=difficile" class="btn btn-danger btn-custom">Livello Difficile</a>
+      </div>
     </div>
+  </div>
+
+  <!-- Sezione giochi extra -->
+  <div class="text-center section-title">
+    <h2 class="text-info">Giochi Extra</h2>
   </div>
 
   <div class="row justify-content-center">
     <div class="col-md-10">
       <div class="overlay-box d-flex flex-wrap justify-content-around text-center">
-        <a href="/quiz?difficolta=facile" class="btn btn-success btn-custom">🟢 Livello facile</a>
-        <a href="/quiz?difficolta=normale" class="btn btn-warning btn-custom">🟡 Livello medio</a>
-        <a href="/quiz?difficolta=difficile" class="btn btn-danger btn-custom">🔴 Livello difficile</a>
-        <a href="/memory" class="btn memory-btn btn-custom">🧠 Gioco del Memory</a>
+        <a href="/memory" class="btn btn-secondary btn-custom">Gioco del Memory</a>
+        <a href="/map-quiz" class="btn btn-secondary btn-custom">Map Quiz</a>
       </div>
     </div>
   </div>

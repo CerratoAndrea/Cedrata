@@ -1,104 +1,101 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Quiz</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" >
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
-    <style>
-        .text-danger {
-            color: crimson;
-            font-weight: bold;
-        }
-          
-	    a:hover {
-	      color: white; /* colore al passaggio del mouse */
-	    }
-    </style>
+  <meta charset="UTF-8">
+  <title>Allenamento</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" th:href="@{/css/training.css}">
+
 </head>
+
 <body th:attr="data-esito=${esito}">
+<main class="quiz-wrapper">
 
-<main>
-	<div class="flex-column min-vh-100 min-vw-100">	  
-	  	<div class="min-vh-100 d-flex flex-grow-1 justify-content-center align-items-center p-2">	
-			<div style="width:30%">
-				<div class="card shadow">
-					  <div class="card-header"><h4>ALLENAMENTO</h4></div>
-					  
-					  <div class="card-body">			    
-					    <form id="verificaForm" method="post" th:action="@{/quiz}" th:object="${quiz}" th:if="${esito == null}">
-					        <p><strong th:text="${quiz.domanda}"></strong></p>
-					         
-					        <fieldset>
+  <div class="card shadow">
+    <div class="card-header">
+      <h4>Allenamento</h4>
+    </div>
 
-							<div th:if="${quiz.tipo == 'bandiera'}" class="d-flex flex-wrap justify-content-between gap-2">
-								<label th:each="risposta : ${quiz.opzioni}" class="text-center" style="flex: 1 1 45%;">
-									<input type="radio" th:field="*{rispostaUtente}" th:value="${risposta}" required />
-									<img th:src="@{'/flags/' + ${#strings.toLowerCase(risposta)} + '.png'}"
-										alt="Bandiera"
-										style="width: 100%; max-width: 120px; height: auto; border: 1px solid #ccc; padding: 5px;">
-								</label>
-							</div>
+    <div class="card-body">
+      <form id="verificaForm" method="post" th:action="@{/quiz}" th:object="${quiz}" th:if="${esito == null}">
+        <p><strong th:text="${quiz.domanda}"></strong></p>
 
-							<div th:if="${quiz.tipo != 'bandiera'}">
-								<label th:each="risposta : ${quiz.opzioni}">
-									<input type="radio" th:field="*{rispostaUtente}" th:value="${risposta}" required />
+        <fieldset>
+          <!-- Domande bandiera -->
+          <div th:if="${quiz.tipo == 'bandiera'}" class="flag-grid">
+            <label th:each="risposta : ${quiz.opzioni}" class="d-flex flex-column align-items-center">
+              <input type="radio" th:field="*{rispostaUtente}" th:value="${risposta}" required />
+              <img th:src="@{'/flags/' + ${#strings.toLowerCase(risposta)} + '.png'}"
+                   alt="Bandiera"
+                   class="img-option mt-2">
+            </label>
+          </div>
 
-									<span th:if="${quiz.tipo == 'popolazione'}"
-										th:text="${#numbers.formatInteger(T(java.lang.Long).parseLong(risposta), 0, 'POINT')}"></span>
+          <!-- Domande testo o popolazione -->
+          <div th:if="${quiz.tipo != 'bandiera'}" class="pt-2">
+            <div th:each="risposta : ${quiz.opzioni}" class="form-check">
+              <label class="form-check-label">
+                <input type="radio" th:field="*{rispostaUtente}" th:value="${risposta}" required class="form-check-input me-2" />
+                <span th:if="${quiz.tipo == 'popolazione'}"
+                      th:text="${#numbers.formatInteger(T(java.lang.Long).parseLong(risposta), 0, 'POINT')}"></span>
+                <span th:if="${quiz.tipo != 'popolazione'}"
+                      th:text="${risposta}"></span>
+              </label>
+            </div>
+          </div>
+        </fieldset>
 
-									<span th:if="${quiz.tipo != 'popolazione'}"
-										th:text="${risposta}"></span>
-								</label>
-								</div>
-						</fieldset>
-											
-					        <input type="hidden" th:field="*{rispostaCorretta}" />
-					        <input type="hidden" th:field="*{difficolta}" />
-					        <input type="hidden" th:field="*{domanda}" />
-					        <input type="hidden" name="numeroDomanda" th:field="*{numeroDomanda}" />
-							<input type="hidden" th:field="*{tipo}" />
-					        				
-							<div id="timer" th:if="${esito == null}" style="font-weight: bold; color: crimson;" class="pb-4">
-						        Tempo rimasto: <span id="countdown">10</span> secondi
-						    </div>
-					    </form>
-					    
-					    <div th:if="${esito}">        					
-							<p th:if="${esito}"  th:utext="${esito}" th:classappend="${#strings.contains(esito, 'Tempo scaduto')} ? 'text-danger' : ''"></p>
-					    </div>
-					  </div>
-					  <div class="card-footer">
-						<div th:if="${esito == null}">
-							<button type="submit" onClick="javascript:verificaRisposta();" style="width: 100%">Verifica risposta</button>
-						</div>				
-						<div th:if="${esito != null}">
-							<a th:href="@{'/allenamento'}" role="button">Prossima domanda</a>
-							<a th:href="@{'/home'}" role="button" >Termina</a>
-					    </div>
-				 	  </div>
-			    </div>  
-			</div>
-    	</div>
-    </div>  
+        <!-- Hidden fields -->
+        <input type="hidden" th:field="*{rispostaCorretta}" />
+        <input type="hidden" th:field="*{difficolta}" />
+        <input type="hidden" th:field="*{domanda}" />
+        <input type="hidden" name="numeroDomanda" th:field="*{numeroDomanda}" />
+        <input type="hidden" th:field="*{tipo}" />
+
+        <!-- Timer -->
+        <div id="timer" th:if="${esito == null}" class="pt-3 fw-bold text-danger text-center">
+          Tempo rimasto: <span id="countdown">10</span> secondi
+        </div>
+      </form>
+
+      <!-- Esito -->
+      <div th:if="${esito}" class="pt-3 text-center">
+        <p th:utext="${esito}" th:classappend="${#strings.contains(esito, 'Tempo scaduto')} ? 'text-danger' : ''"></p>
+      </div>
+    </div>
+
+    <div class="card-footer d-flex flex-column gap-2">
+      <div th:if="${esito == null}">
+        <button type="submit" onclick="verificaRisposta()" class="btn btn-primary btn-custom">Verifica risposta</button>
+      </div>
+
+      <div th:if="${esito != null}">
+        <a th:href="@{/allenamento}" class="btn btn-secondary btn-custom">Prossima domanda</a>
+        <a th:href="@{/home}" class="btn btn-outline-light btn-custom">Termina</a>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <script src="/js/quiz.js"></script>
-<script type="text/javascript">	
-		function verificaRisposta(){			
-			const isChecked = document.querySelector('input[name="rispostaUtente"]:checked');
-			const timeout = document.getElementById('timeout');
-			
-			if(timeout){
-				const radioButtons = document.querySelectorAll('input[type="radio"]');
-				radioButtons.forEach(radio => radio.checked = false);
-			}
-			
-			if (isChecked || timeout) {
-				document.getElementById('verificaForm').submit();
-			}			  	
-		}
+<script>
+  function verificaRisposta() {
+    const isChecked = document.querySelector('input[name="rispostaUtente"]:checked');
+    const timeout = document.getElementById('timeout');
+
+    if (timeout) {
+      const radioButtons = document.querySelectorAll('input[type="radio"]');
+      radioButtons.forEach(radio => radio.checked = false);
+    }
+
+    if (isChecked || timeout) {
+      document.getElementById('verificaForm').submit();
+    }
+  }
 </script>
 </body>
 </html>

@@ -1,47 +1,65 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Registrazione concorrente</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" >
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+  <meta charset="UTF-8">
+  <title>Registrazione</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" th:href="@{/css/register.css}">
+
+
+
 </head>
 <body>
-<main>
-	<div class="flex-column min-vh-100 min-vw-100">	  
-	  	<div class="min-vh-100 d-flex flex-grow-1 justify-content-center align-items-center p-2">	
-			<div style="width:25%">
-				<h1 class="text-center">REGISTRAZIONE</h1>
-			    <form method="post" id="registerForm" th:action="@{/register}" th:object="${user}">
-			        <label for="username">Username</label>
-			        <input type="text" id="username" name="username" required>
-			        
-			        <label for="password">Password</label>
-			        <input type="password" id="password" name="password" required>
-			        
-			        <label for="repeatPassword">Ripeti password</label>
-			        <input type="password" id="repeatPassword" name="repeatPassword" required>
-			        		    	
-			        <button type="button" onclick="javascript: checkPassword()" style="width: 100%;">Registrati</button>
-			    </form>
-			    		    
-    			<p id="errorMsg" style="color: crimson;" th:text="${error}" ></p>
-    			<p>Hai già un account? <a href="/login">Accedi</a></p>
-    		</div>
-    	</div>
-    </div>
-</main>
-</body>
 
-<script type="text/javascript">	
-		function checkPassword(){			
-			if (document.getElementById('password').value == document.getElementById('repeatPassword').value) {
-				document.getElementById('registerForm').submit();
-			}			  	
-			else{
-				document.getElementById("errorMsg").innerHTML = "Le password non coincidono";
-			}
-		}
-</script>
+  <div class="register-box">
+    <div class="text-center mb-3">
+      <img src="img/cedrata.png" alt="Logo Cedrata" style="max-width: 200px;">
+    </div>
+
+    <h2 class="text-center mb-4">Registrazione</h2>
+
+    <form method="post" id="registerForm" th:action="@{/register}" th:object="${user}">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" id="username" name="username" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="repeatPassword" class="form-label">Ripeti password</label>
+        <input type="password" id="repeatPassword" name="repeatPassword" class="form-control" required>
+      </div>
+
+      <div class="mb-3 text-danger text-center" id="errorMsg" th:text="${error}"></div>
+
+      <button type="button" onclick="checkPassword()" class="btn btn-primary">Registrati</button>
+    </form>
+
+    <div class="mt-3 text-center">
+      <p>Hai già un account? <a href="/login">Accedi</a></p>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    function checkPassword() {
+      const pass = document.getElementById('password').value;
+      const repeat = document.getElementById('repeatPassword').value;
+      const error = document.getElementById("errorMsg");
+
+      if (pass === repeat) {
+        document.getElementById('registerForm').submit();
+      } else {
+        error.innerHTML = "Le password non coincidono";
+      }
+    }
+  </script>
+
+</body>
 </html>

@@ -1,0 +1,58 @@
+    body {
+      background-color: #121212;
+      color: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .memory-container {
+      width: 100%;
+      max-width: 960px;
+    }
+
+    h1 {
+      font-weight: bold;
+      color: #0d6efd;
+    }
+
+    .card {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background-color: #1e1e1e !important; /* <-- override totale */
+      border: 1px solid #444;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card img {
+      max-width: 90%;
+      max-height: 90%;
+      display: none;
+    }
+
+    .card.flipped img {
+      display: block;
+    }
+
+    .btn-home {
+      margin-top: 2rem;
+    }
+
+    /* Rimuove interferenze di Bootstrap se mai ereditate */
+    .card .bg-light,
+    .card.bg-light {
+      background-color: #1e1e1e !important;
+    }

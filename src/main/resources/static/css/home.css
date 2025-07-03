@@ -1,0 +1,46 @@
+    body {
+      background-color: #121212;
+      color: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      background-image: url('/img/world_light.svg');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      background-blend-mode: overlay;
+    }
+
+    .overlay-box {
+      background-color: rgba(33, 37, 41, 0.85); /* dark gray */
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .btn-custom {
+      min-width: 200px;
+      margin: 0.5rem;
+      font-weight: 600;
+      border-radius: 10px;
+    }
+
+    .btn-light-outline {
+      color: #f8f9fa;
+      border-color: #f8f9fa;
+    }
+
+    .btn-light-outline:hover {
+      background-color: #f8f9fa;
+      color: #212529;
+    }
+
+    h1, h2 {
+      font-weight: 700;
+    }
+
+    .section-title {
+      margin-bottom: 1rem;
+    }
+
+    .section-box {
+      margin-bottom: 2rem;
+    }

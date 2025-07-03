@@ -1,0 +1,45 @@
+    body {
+      background-color: #121212;
+      color: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .register-box {
+      background-color: rgba(33, 37, 41, 0.95);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .form-control {
+      background-color: #212529;
+      border: 1px solid #495057;
+      color: #f8f9fa;
+    }
+
+    .form-control:focus {
+      background-color: #212529;
+      color: #fff;
+      border-color: #0d6efd;
+      box-shadow: none;
+    }
+
+    .btn-primary {
+      width: 100%;
+      font-weight: bold;
+    }
+
+    a {
+      color: #0d6efd;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }

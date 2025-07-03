@@ -93,11 +93,13 @@ public class QuizController {
         String esito;
         String tipo = quiz.getTipo();
 
-        // Per bandiere: costruisci risposta descrittiva con immagine
+        // costruisce risposta descrittiva con immagine
         String rispDescr = correttaValida;
 
+        
+        //debug
         System.out.println("TIPO DEL QUIZ: " + tipo);
-        System.out.println("RISPOSTA CORRETTA GREZZA: " + correttaValida);
+        System.out.println("RISPOSTA CORRETTA : " + correttaValida);
         
         if ("bandiera".equalsIgnoreCase(tipo)) {
             Country paeseCorretto = countryService.findAll().stream()
@@ -160,6 +162,12 @@ public class QuizController {
         Collections.shuffle(countries);
         model.addAttribute("countries", countries.subList(0, 8)); // 8 coppie = 16 carte
         return "memory";
+    }
+    
+    @GetMapping("/map-quiz")
+    public String mapQuiz(Model model) {
+        model.addAttribute("paesi", countryService.findAll());
+        return "map-quiz"; 
     }
     
 }
