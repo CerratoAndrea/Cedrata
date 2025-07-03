@@ -17,5 +17,13 @@ public class CountryService {
     public List<Country> findAll() {
         return countryRepository.findAll();
     }
+    
+    public List<Country> getCountries() {
+        return countryRepository.findAll();
+    }
+
+    public Country getByAlpha2Code(String code) {
+        return countryRepository.findByAlpha2Code(code);
+    }
 }
 

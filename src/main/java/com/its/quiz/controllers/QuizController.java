@@ -154,13 +154,12 @@ public class QuizController {
         	return "training";
     }
     
-    @GetMapping("/paesi")
-    public String paesi(Model model) {
-        List<Country> countryList = countryService.findAll();
-        Collections.sort(countryList, Comparator.comparing(Country::getName));
-        
-        model.addAttribute("countries", countryList);
-        return "paesi";
+    @GetMapping("/memory")
+    public String memoryGame(Model model) {
+        List<Country> countries = countryService.findAll();
+        Collections.shuffle(countries);
+        model.addAttribute("countries", countries.subList(0, 8)); // 8 coppie = 16 carte
+        return "memory";
     }
     
 }

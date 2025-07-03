@@ -1,5 +1,7 @@
 package com.its.quiz.entities;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -90,5 +92,19 @@ public class Country {
 	public void setSubregion(String subregion) {
 		this.subregion = subregion;
 	} 
+	
+	//restituisce una lista di stringhe pulite
+	public List<String> getLanguageNames() {
+	    if (languages == null || languages.isBlank()) {
+	        return List.of();
+	    }
+
+	    return List.of(languages.split(","))
+	               .stream()
+	               .map(String::trim)
+	               .filter(s -> !s.isEmpty())
+	               .map(lang -> lang.substring(0, 1).toUpperCase() + lang.substring(1).toLowerCase())
+	               .toList();
+	}
 
 }

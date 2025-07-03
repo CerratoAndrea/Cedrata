@@ -15,9 +15,10 @@ window.addEventListener("load", () => {
     const tooltip = document.getElementById('tooltip');
 
     paesi.forEach(paese => {
-      const el = document.getElementById(paese.alpha2code);
+      const code = paese.alpha2Code;
+      const el = document.getElementById(code);
       if (!el) {
-        console.warn("Elemento non trovato per:", paese.alpha2code);
+        console.warn("Elemento non trovato per:", code);
         return;
       }
 
@@ -34,7 +35,7 @@ window.addEventListener("load", () => {
 
       p.addEventListener('mouseover', e => {
         tooltip.innerHTML = `
-          <img src="${paese.flag}" alt="Bandiera">
+          <img src="/flags/${paese.alpha2Code.toLowerCase()}.png" width="60" alt="Bandiera ${paese.name}"><br>
           <strong>${paese.name}</strong><br>
           Capitale: ${paese.capital}
         `;
@@ -53,7 +54,7 @@ window.addEventListener("load", () => {
       });
 
       p.addEventListener('click', () => {
-        window.location.href = '/country?code=' + paese.alpha2code;
+        window.location.href = '/country?code=' + paese.alpha2Code;
       });
     });
   }

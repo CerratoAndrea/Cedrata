@@ -41,9 +41,14 @@
 								<div th:if="${quiz.tipo != 'bandiera'}">
 									<label th:each="risposta : ${quiz.opzioni}">
 										<input type="radio" th:field="*{rispostaUtente}" th:value="${risposta}" required />
-										<span th:text="${risposta}"></span>
+
+										<span th:if="${quiz.tipo == 'popolazione'}"
+											th:text="${#numbers.formatInteger(T(java.lang.Long).parseLong(risposta), 0, 'POINT')}"></span>
+
+										<span th:if="${quiz.tipo != 'popolazione'}"
+											th:text="${risposta}"></span>
 									</label>
-								</div>
+									</div>
 							</fieldset>
 					
 					        <input type="hidden" th:field="*{rispostaCorretta}" />

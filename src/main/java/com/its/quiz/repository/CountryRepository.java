@@ -8,4 +8,6 @@ import com.its.quiz.entities.Country;
 @Repository
 public interface CountryRepository extends JpaRepository<Country, String> {
 	
+	Country findByAlpha2Code(String code);
+	
 }
